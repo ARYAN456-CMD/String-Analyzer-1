@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Login - String Analyzer{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1>🔍 String Analyzer</h1>
+            <p>Login to analyze your strings</p>
+        </div>
+        
+        <form method="POST" action="{{ url_for('login') }}" class="auth-form">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required 
+                       placeholder="Enter your username" autofocus>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required 
+                       placeholder="Enter your password">
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+        
+        <div class="auth-footer">
+            <p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
+            <p class="demo-info">💡 Demo: username: <strong>demo</strong>, password: <strong>demo123</strong></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

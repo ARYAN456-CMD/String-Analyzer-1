@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block title %}Analyzer - String Analyzer{% endblock %}
+
+{% block content %}
+<div class="analyzer-container">
+    <header class="analyzer-header">
+        <h1>🔍 String Analyzer Tool</h1>
+        <div class="user-info">
+            <span>Welcome, <strong>{{ username }}</strong>!</span>
+            <a href="{{ url_for('logout') }}" class="btn btn-secondary">Logout</a>
+        </div>
+    </header>
+    
+    <div class="analyzer-content">
+        <div class="input-section">
+            <h2>Input Your String</h2>
+            <form method="POST" action="{{ url_for('analyzer') }}">
+                <div class="form-group">
+                    <textarea id="input_text" name="input_text" rows="8" 
+                              placeholder="Enter your text here to analyze..."
+                              required>{{ input_text }}</textarea>
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary">Analyze String</button>
+                    <button type="button" class="btn btn-secondary" onclick="clearInput()">Clear</button>
+                </div>
+            </form>
+        </div>
+        
+        {% if analysis %}
+        <div class="results-section">
+            <h2>📊 Analysis Results</h2>
+            
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="card-icon">📏</div>
+                    <div class="card-content">
+                        <h3>Basic Statistics</h3>
+                        <ul>
+                            <li><strong>Total Characters:</strong> {{ analysis.char_count }}</li>
+                            <li><strong>Word Count:</strong> {{ analysis.word_count }}</li>
+                            <li><strong>Line Count:</strong> {{ analysis.line_count }}</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="card-icon">🔤</div>
+                    <div class="card-content">
+                        <h3>Character Analysis</h3>
+                        <ul>
+                            <li><strong>Uppercase:</strong> {{ analysis.uppercase_count }}</li>
+                            <li><strong>Lowercase:</strong> {{ analysis.lowercase_count }}</li>
+                            <li><strong>Digits:</strong> {{ analysis.digit_count }}</li>
+                            <li><strong>Spaces:</strong> {{ analysis.space_count }}</li>
+                            <li><strong>Special Characters:</strong> {{ analysis.special_char_count }}</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="card-icon">🅰️</div>
+                    <div class="card-content">
+                        <h3>Letter Analysis</h3>
+                        <ul>
+                            <li><strong>Vowels:</strong> {{ analysis.vowel_count }}</li>
+                            <li><strong>Consonants:</strong> {{ analysis.consonant_count }}</li>
+                            <li><strong>Starts With:</strong> "{{ analysis.starts_with }}"</li>
+                            <li><strong>Ends With:</strong> "{{ analysis.ends_with }}"</li>
+                            <li><strong>Is Palindrome:</strong> {{ 'Yes ✓' if analysis.is_palindrome else 'No ✗' }}</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="result-card full-width">
+                    <div class="card-icon">🔄</div>
+                    <div class="card-content">
+                        <h3>Text Transformations</h3>
+                        <div class="transformation-item">
+                            <strong>Uppercase:</strong>
+                            <div class="transformation-result">{{ analysis.uppercase }}</div>
+                        </div>
+                        <div class="transformation-item">
+                            <strong>Lowercase:</strong>
+                            <div class="transformation-result">{{ analysis.lowercase }}</div>
+                        </div>
+                        <div class="transformation-item">
+                            <strong>Title Case:</strong>
+                            <div class="transformation-result">{{ analysis.title_case }}</div>
+                        </div>
+                        <div class="transformation-item">
+                            <strong>Reversed:</strong>
+                            <div class="transformation-result">{{ analysis.reversed }}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="card-icon">📈</div>
+                    <div class="card-content">
+                        <h3>Word Frequency (Top 10)</h3>
+                        <ul class="frequency-list">
+                            {% for word, count in analysis.word_frequency.items() %}
+                                <li><strong>{{ word }}:</strong> {{ count }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="card-icon">🔢</div>
+                    <div class="card-content">
+                        <h3>Character Frequency (Top 10)</h3>
+                        <ul class="frequency-list">
+                            {% for char, count in analysis.char_frequency.items() %}
+                                <li><strong>"{{ char }}":</strong> {{ count }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+function clearInput() {
+    document.getElementById('input_text').value = '';
+}
+</script>
+{% endblock %}
